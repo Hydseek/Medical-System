@@ -45,5 +45,5 @@ It provides a complete system for medical administration, including user managem
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/wejden123cherif/Symfony-Project.git
-cd Symfony-Project
+git clone https://github.com/Hydseek/Medical-System
+cd Medical-System
