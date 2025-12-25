@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Choose a Doctor{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                    <div class="card-header form-title">
+                    <h3>Choose a Doctor</h3>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted mb-3">Select a doctor and continue to choose an available time slot.</p>
+
+                    {{ form_start(form) }}
+                    <div class="mb-3">
+                        {{ form_label(form.medecin, null, {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.medecin, {'attr': {'class': 'form-select'}}) }}
+                    </div>
+
+                    <div class="text-center">
+                        {{ form_widget(form.submit, {'attr': {'class': 'btn btn-custom'}}) }}
+                    </div>
+                    {{ form_end(form) }}
+
+                    <div class="mt-3 text-center">
+                        <a href="{{ path('mes_rendezvous') }}" class="link-secondary">See my appointments</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

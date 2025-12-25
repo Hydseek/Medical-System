@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Book an Appointment{% endblock %}
+
+{% block body %}
+    <h1>Book an Appointment</h1>
+
+    {{ form_start(form) }}
+        {{ form_row(form.specialite) }}
+        
+        {# Affichage dynamique des médecins #}
+        {% if medecins is not empty %}
+            {{ form_row(form.medecin, {
+                'choices': medecins|map(medecin => medecin.nom ~ ' ' ~ medecin.prenom),
+                'label': 'Choose a doctor'
+            }) }}
+        {% else %}
+            {# Si pas de médecins associés, on garde le champ des médecins désactivé #}
+            {{ form_row(form.medecin, {'disabled': true}) }}
+        {% endif %}
+        
+        {{ form_row(form.submit) }}
+    {{ form_end(form) }}
+{% endblock %}

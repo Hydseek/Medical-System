@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Appointments - Medical System{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row">
+        <!-- Sidebar Menu -->
+        <div class="col-lg-3 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">
+                        <i class="fas fa-user-circle"></i> My Dashboard
+                    </h5>
+                    <nav class="nav flex-column">
+                        <a class="nav-link" href="{{ path('patient_profile', {id: patient.id}) }}">
+                            <i class="fas fa-user"></i> My Account
+                        </a>
+                        <a class="nav-link active" href="{{ path('patient_rendezvous', { id: patient.id }) }}">
+                            <i class="fas fa-calendar-alt"></i> My Appointments
+                        </a>
+                        <a class="nav-link" href="{{ path('patient_edit', { id: patient.id }) }}">
+                            <i class="fas fa-edit"></i> Edit Profile
+                        </a>
+                        <a class="nav-link" href="{{ path('patient_change_password', { id: patient.id }) }}">
+                            <i class="fas fa-key"></i> Change Password
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-lg-9">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-calendar-check"></i> My Appointments
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    {% if rendezvous is not empty %}
+                        <div class="row">
+                            {% for rdv in rendezvous %}
+                                <div class="col-md-6 mb-4">
+                                    <div class="card border-left-primary shadow-sm h-100">
+                                        <div class="card-body">
+                                            <div class="mb-3">
+                                                <h6 class="text-muted text-uppercase mb-1">Doctor</h6>
+                                                <p class="fs-5 fw-bold">
+                                                    Dr. {{ rdv.medecin.prenom }} {{ rdv.medecin.nom }}
+                                                </p>
+                                            </div>
+                                            <div class="mb-3">
+                                                <h6 class="text-muted text-uppercase mb-1">Date & Time</h6>
+                                                <p class="fs-5">
+                                                    <i class="fas fa-calendar-alt text-primary"></i>
+                                                    {{ rdv.dateHeure|date('d/m/Y') }}
+                                                    <br>
+                                                    <i class="fas fa-clock text-primary"></i>
+                                                    {{ rdv.dateHeure|date('H:i') }}
+                                                </p>
+                                            </div>
+                                            <a href="{{ path('rendez_vous_annuler', { id: rdv.id }) }}" 
+                                               class="btn btn-sm btn-outline-danger w-100"
+                                               onclick="return confirm('Are you sure you want to cancel this appointment?');">
+                                                <i class="fas fa-times"></i> Cancel Appointment
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info" role="alert">
+                            <i class="fas fa-info-circle"></i>
+                            <strong>No appointments yet.</strong>
+                            <a href="{{ path('rendez_vous_step_1') }}" class="alert-link">Book your first appointment</a>
+                        </div>
+                    {% endif %}
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

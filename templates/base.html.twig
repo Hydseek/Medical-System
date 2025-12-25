@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Welcome to Our Medical System{% endblock %}</title>
+    <link rel="icon" href="favicon.ico">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ asset('css/base.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
+    {% block stylesheets %}{% endblock %}
+    {% if app.user %}
+        <meta name="csrf-token" content="{{ csrf_token('notifications') }}">
+    {% endif %}
+</head>
+<body class="bg-light">
+
+    <!-- HEADER -->
+    <header class="py-4 text-center bg-white shadow-sm">
+        <h1 class="fw-bold text-primary mb-0">
+            <i class="fas fa-stethoscope me-2"></i> 
+            Medical System
+        </h1>
+        <p class="text-secondary mt-2">Your health, our priority.</p>
+    </header>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-top border-bottom shadow-sm">
+        <div class="container">
+
+            <!-- Contact info -->
+            <div class="navbar-brand small text-secondary d-none d-md-block">
+                <span><i class="fas fa-clock"></i> Mon–Fri 09:00–18:00</span>
+                <span class="mx-2">•</span>
+                <span><i class="fas fa-phone-alt"></i> <a href="tel:+21694004035">+21694004035</a></span>
+            </div>
+
+            <!-- Burger -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Links -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+
+
+                    {% if app.user and is_granted('ROLE_ADMIN') %}
+                        <!-- Admin Navigation -->
+                        <li class="nav-item"><a class="nav-link" href="{{ path('app_accueil') }}">Home</a></li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="adminMenu" role="button" data-bs-toggle="dropdown">
+                                🛡️ {{ app.user.prenom }} (Admin)
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{{ path('admin_profile_dashboard') }}">Admin Dashboard</a></li>
+                                <li><a class="dropdown-item" href="{{ path('admin_profile_edit') }}">My Admin Info</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="{{ path('app_deconnexion') }}">Logout</a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <!-- Patient/Guest Navigation -->
+                        <li class="nav-item"><a class="nav-link" href="{{ path('app_accueil') }}">Home</a></li>
+
+                        <li class="nav-item">
+                            {% if app.user %}
+                                <a class="nav-link" href="{{ path('rendez_vous_step_1') }}">Book Appointment</a>
+                            {% else %}
+                                <a class="nav-link" href="{{ path('app_connexion') }}">Book Appointment</a>
+                            {% endif %}
+                        </li>
+
+                        <li class="nav-item"><a class="nav-link" href="{{ path('app_contact') }}">Contact</a></li>
+
+                        {% if app.user %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button" data-bs-toggle="dropdown">
+                                    👤 {{ app.user.prenom }} {{ app.user.nom }}
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="{{ path('patient_profile', {id: app.user.id}) }}">My Profile</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('patient_rendezvous', {id: app.user.id}) }}">My Appointments</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item text-danger" href="{{ path('app_deconnexion') }}">Logout</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item ms-2">
+                                {{ include('_notifications.html.twig') }}
+                            </li>
+                        {% else %}
+                            <li class="nav-item"><a class="nav-link" href="{{ path('app_connexion') }}">Login</a></li>
+                        {% endif %}
+                    {% endif %}
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- PAGE CONTENT -->
+    <div class="container mt-5">
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label == 'error' ? 'danger' : label }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        {% block body %}{% endblock %}
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-dark text-light pt-5 pb-4 mt-5">
+        <div class="container text-center text-md-start">
+            <div class="row">
+
+                <!-- About -->
+                <div class="col-md-3 mb-4">
+                    <h5 class="fw-bold text-uppercase">Medical System</h5>
+                    <p>Your multidisciplinary healthcare center. Complete care for the whole family.</p>
+                </div>
+
+                <!-- Hours -->
+                <div class="col-md-3 mb-4">
+                    <h5 class="fw-bold text-uppercase">Opening Hours</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-clock me-2"></i>Mon–Fri: 09:00–18:00</li>
+                        <li><i class="fas fa-clock me-2"></i>Weekend: Closed</li>
+                    </ul>
+                </div>
+
+                <!-- Useful Links -->
+                <div class="col-md-3 mb-4">
+                    <h5 class="fw-bold text-uppercase">Useful Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{{ path('app_accueil') }}" class="text-light">Home</a></li>
+                        {% if app.user %}
+                            <li><a href="{{ path('rendez_vous_step_1') }}" class="text-light">Book Appointment</a></li>
+                            <li><a href="{{ path('patient_profile', {id: app.user.id}) }}" class="text-light">My Profile</a></li>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <li><a href="{{ path('admin_dashboard') }}" class="text-light">Admin Area</a></li>
+                            {% endif %}
+                            <li><a href="{{ path('app_deconnexion') }}" class="text-light">Logout</a></li>
+                        {% else %}
+                            <li><a href="{{ path('app_connexion') }}" class="text-light">Login</a></li>
+                        {% endif %}
+                        <li><a href="{{ path('app_contact') }}" class="text-light">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div class="col-md-3 mb-4">
+                    <h5 class="fw-bold text-uppercase">Contact</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-map-marker-alt me-2"></i>Tunis</li>
+                        <li><i class="fas fa-phone-alt me-2"></i><a href="tel:+21694004035" class="text-light">+21694004035</a></li>
+                        <li><i class="fas fa-envelope me-2"></i><a href="mailto:info@santeensemble.be" class="text-light">info@medicalsystem.com</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Socials -->
+            <div class="text-center mt-4">
+                <a href="#" class="text-light me-3"><i class="fab fa-facebook fa-lg"></i></a>
+                <a href="#" class="text-light me-3"><i class="fab fa-instagram fa-lg"></i></a>
+                <a href="#" class="text-light me-3"><i class="fab fa-twitter fa-lg"></i></a>
+                <a href="#" class="text-light"><i class="fab fa-linkedin fa-lg"></i></a>
+            </div>
+
+          
+
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

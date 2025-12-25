@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home - Medical Center Health Together{% endblock %}
+
+{% block body %}
+    <!-- Hero Section -->
+    <header class="hero-section">
+        <div class="container">
+            <h1 class="display-4 fw-bold">Welcome to Our Medical Center Health Together</h1>
+            <p class="lead">Book an appointment online with our specialists in just a few clicks.</p>
+            {% if app.user %}
+                <a href="{{ path('rendez_vous_step_1') }}" class="btn btn-light btn-lg mt-3">Book an Appointment</a>
+            {% else %}
+                <a href="{{ path('app_connexion') }}" class="btn btn-light btn-lg mt-3">Book an Appointment</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <!-- Available Doctors Section -->
+    <section class="container mt-5 text-center">
+        <h2 class="text-center mb-4">All Our Doctors</h2>
+
+        <div class="row">
+            {% for doctor in medecins %}
+                <div class="col-sm-12 col-md-6 col-lg-4 d-flex align-items-stretch mb-4">
+                    <div class="card w-100 shadow-sm">
+                        <div class="card-body text-center">
+
+                            {# Doctor photo (optional) #}
+                            {% if doctor.photo is defined and doctor.photo %}
+                                <img src="{{ asset('images/medecins/' ~ doctor.photo) }}"
+                                    alt="Photo of {{ doctor.nom }}"
+                                    class="img-fluid rounded-circle mb-3"
+                                    style="width: 100px; height: 100px; object-fit: cover;">
+                            {% else %}
+                                <div class="mb-3">
+                                    <i class="fas fa-user-md fa-3x text-secondary"></i>
+                                </div>
+                            {% endif %}
+
+                            <h5 class="card-title">{{ doctor.prenom }} {{ doctor.nom }}</h5>
+
+                            {# Specialty or default to "General Practitioner" #}
+                            <p class="card-text text-muted">
+                                {{ doctor.specialite is defined and doctor.specialite ? doctor.specialite : 'General Practitioner' }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-12 text-center">
+                    <p class="text-danger">No doctors are available at the moment.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

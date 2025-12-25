@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Medical Center Health Together | Login{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <!-- Apply "form-title" class here -->
+                <div class="card-header form-title text-center">
+                    <h3>Login</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% if error %}
+                            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                        {% endif %}
+
+                        {% if app.user %}
+                            <div class="alert alert-success">
+                                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_deconnexion') }}">Logout</a>
+                            </div>
+                        {% endif %}
+
+                        {% for message in app.flashes('loginError') %}
+                            <div class="alert alert-danger">{{ message }}</div>
+                        {% endfor %}
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="text" id="email" name="email" class="form-control" autocomplete="email" value="{{ last_username }}" required autofocus>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" id="password" name="password" class="form-control" autocomplete="current-password" required>
+                        </div>
+
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-custom">Login</button> <!-- Custom class -->
+                        </div>
+                    </form>
+                    
+                    <div class="text-center mt-3">
+                        <!-- Apply btn-custom class to links without border -->
+                        <a href="{{ path('app_forgot_password_request') }}" class="btn btn-custom btn-sm border-0">Forgot Password?</a>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <span>Don't have an account? 
+                        <!-- Apply btn-custom class to links without border -->
+                        <a href="{{ path('app_inscription') }}" class="btn btn-custom btn-sm border-0">Sign Up</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

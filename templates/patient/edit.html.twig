@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Maison Médicale Santé Ensemble | Edit my profile{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <!-- Titre centré avec la classe "form-title" -->
+                <div class="card-header form-title text-center">
+                    <h3>Edit my profile</h3>
+                </div>
+                <div class="card-body">
+                    {{ form_start(form) }}
+
+                        <div class="mb-3">
+                            {{ form_label(form.nom) }}
+                            {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.nom) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(form.prenom) }}
+                            {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.prenom) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(form.email) }}
+                            {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.email) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(form.dateNaissance) }}
+                            {{ form_widget(form.dateNaissance, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.dateNaissance) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(form.adresse) }}
+                            {{ form_widget(form.adresse, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.adresse) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(form.telephone) }}
+                            {{ form_widget(form.telephone, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.telephone) }}
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            {{ form_widget(form.submit, {'attr': {'class': 'btn btn-custom'}}) }}
+                        </div>
+
+                    {{ form_end(form) }}
+
+                    <div class="text-center mt-3">
+                        <a href="{{ path('patient_profile', {id: patient.id}) }}" class="btn btn-custom btn-sm border-0">
+                            ← Back to profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

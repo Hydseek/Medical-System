@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Check your email{% endblock %}
+
+{% block body %}
+<p>A password reset email has been sent if an account matches that address.</p>
+<a href="{{ path('app_connexion') }}">Back to login</a>
+{% endblock %}

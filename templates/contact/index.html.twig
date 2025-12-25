@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="form-title text-center mb-4">Contact Us</h1>
+
+    <div class="row">
+        <!-- Informations de contact -->
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="contact_wrap contact_style3 shadow-sm rounded p-4 bg-light">
+                <div class="contact_icon">
+                    <i class="linearicons-map2"></i>
+                </div>
+                <div class="contact_text">
+                    <span>{% trans %}Address{% endtrans %}</span>
+                    <a href="#" class="contact-link">Tunis</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="contact_wrap contact_style3 shadow-sm rounded p-4 bg-light">
+                <div class="contact_icon">
+                    <i class="linearicons-envelope-open"></i>
+                </div>
+                <div class="contact_text">
+                    <span>{% trans %}Mail address{% endtrans %}</span>
+                    <a href="mailto:cherifwejden7@gmail.com" class="contact-link">cherifwejden@gmail.com</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="contact_wrap contact_style3 shadow-sm rounded p-4 bg-light">
+                <div class="contact_icon">
+                    <i class="linearicons-tablet2"></i>
+                </div>
+                <div class="contact_text">
+                    <span>{% trans %}PhoneNumber{% endtrans %}</span>
+                    <a href="tel:+21694004035" class="contact-link">+32 489 47 08 53</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section pt-0">
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-xl-6 col-md-10">
+                    <div class="border_form shadow-sm rounded p-4">
+                        <div class="heading_s1 mb-4">
+                            <h2>Contact us </h2>
+                        </div>
+                        <p class="leads">If you have any question , any suggestion don't hesitate to contact us</p>
+                        <div class="field_form">
+                            <div id="contact-form-container">
+                                {% include 'contact/_form.html.twig' %}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container my-5">
+        <h2 class="text-center mb-4">{% trans %}Our localisation{% endtrans %}</h2>
+        <div class="map-responsive shadow rounded overflow-hidden" style="height: 400px;">
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2520.513829625765!2d5.576238115745652!3d50.63644497950257!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c0f939ace6bd6d%3A0x3ec39e3702adbb91!2sRue%20des%20Rivageois%207%2C%204000%20Li%C3%A8ge%2C%20Belgium!5e0!3m2!1sfr!2sbe!4v1647695600000!5m2!1sfr!2sbe"
+                width="100%" height="100%" frameborder="0" style="border:0;" allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const formContainer = document.getElementById('contact-form-container');
+
+        formContainer.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const form = e.target;
+            const url = form.action;
+
+            const formData = new FormData(form);
+
+            fetch(url, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Remplacer le formulaire et afficher les messages flash
+                formContainer.innerHTML = data.form;
+
+                // (Optionnel) Tu peux aussi gérer ici des animations ou autres comportements JS
+            })
+            .catch(error => {
+                console.error('AJAX Error:', error);
+            });
+        });
+    });
+    </script>
+{% endblock %}

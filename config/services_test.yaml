@@ -1,0 +1,5 @@
+services:
+    # Expose a public alias to the login limiter for functional tests
+    limiter.login_test:
+        alias: 'limiter.login'
+        public: true

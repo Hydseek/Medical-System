@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Maison Médicale Santé Ensemble | Password Reset{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                    <div class="card-header form-title text-center">
+                    <h3>Reset my password</h3>
+                </div>
+                <div class="card-body">
+                    {% for message in app.flashes('resetPasswordError') %}
+                        <div class="alert alert-danger">{{ message }}</div>
+                    {% endfor %}
+
+                    {{ form_start(requestForm) }}
+                        <div class="mb-3">
+                            {{ form_label(requestForm.email) }}
+                            {{ form_widget(requestForm.email, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(requestForm.email) }}
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-custom">Send</button>
+                        </div>
+                    {{ form_end(requestForm) }}
+                    
+                    <div class="text-center mt-3">
+                        <a href="{{ path('app_connexion') }}" class="btn btn-custom btn-sm border-0">Back to login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

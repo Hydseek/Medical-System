@@ -1,0 +1,23 @@
+# see https://symfony.com/doc/current/reference/configuration/framework.html
+framework:
+    secret: '%env(APP_SECRET)%'
+    assets: ~
+
+    # CSRF protection for forms (enabled by default in Symfony forms, but set explicitly here)
+    csrf_protection: true
+
+    # Note that the session will be started ONLY if you read or write from it.
+    # Harden session cookie settings to mitigate CSRF session fixation and cookie theft:
+    session:
+        cookie_secure: auto     # use secure cookies when using TLS
+        cookie_samesite: lax    # prevent cross-site POSTs by default
+        cookie_httponly: true
+
+    #esi: true
+    #fragments: true
+
+when@test:
+    framework:
+        test: true
+        session:
+            storage_factory_id: session.storage.factory.mock_file

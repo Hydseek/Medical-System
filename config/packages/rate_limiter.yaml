@@ -1,0 +1,8 @@
+framework:
+    rate_limiter:
+        limiters:
+            login:
+                policy: "sliding_window"
+                limit: 5
+                interval: "1 minute"
+                cache_pool: "cache.app" # uses the application cache pool
